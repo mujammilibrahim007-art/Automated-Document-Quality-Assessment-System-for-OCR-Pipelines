@@ -2,17 +2,19 @@
 
 An intelligent document analysis tool that evaluates the **visual quality of scanned or digital documents** using Computer Vision and OCR-based techniques.
 
+
 ---
 
-## 🚀 Problem
+## 🚀 Problem & Motivation
 
-Poor-quality documents (skewed, low contrast, inconsistent formatting) significantly reduce **OCR accuracy** and downstream data processing reliability.
+💡 Designed for real-world OCR pipelines where input quality directly affects model accuracy.
 
-Manual inspection is:
+Poor document quality is one of the biggest reasons OCR systems fail in real-world applications.
 
-* Time-consuming
-* Inconsistent
-* Not scalable
+This project builds an automated document quality assessment system that analyzes key visual properties—such as contrast, alignment, typography, and spacing—to determine whether a document is suitable for reliable OCR processing.
+
+The system combines multiple independent signals into a unified decision framework, enabling early detection of low-quality inputs before they impact downstream pipelines.
+
 
 ---
 
@@ -51,6 +53,25 @@ This project provides an automated system to assess document quality using **mul
 
 ---
 
+## 📸 Screenshots
+
+### 📤 Upload Interface
+
+![Upload](assets/upload.png)
+
+### 📊 Analysis Summary
+
+![Analysis](assets/analysis.png)
+
+### 📌 Final Decision Output
+
+![Decision](assets/decision.png)
+
+---
+
+
+---
+
 ## 📊 Sample Output
 
 | Metric        | Value  | Interpretation |
@@ -63,7 +84,7 @@ This project provides an automated system to assess document quality using **mul
 **Final Decision:** ✅ ACCEPTABLE
 
 ---
-
+  
 ## ⚙️ Tech Stack
 
 * Python
@@ -77,8 +98,7 @@ This project provides an automated system to assess document quality using **mul
 ## ▶️ How to Run
 
 ```bash
-git clone https://github.com/your-username/document-quality-assessment.git
-cd document-quality-assessment
+git clone https://github.com/mujammilibrahim007-art/Automated-Document-Quality-Assessment-System-for-OCR-Pipelines.git
 pip install -r requirements.txt
 streamlit run app.py
 ```
