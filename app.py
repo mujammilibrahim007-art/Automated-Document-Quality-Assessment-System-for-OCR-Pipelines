@@ -11,21 +11,21 @@ from pytesseract import Output
 # -----------------------------
 
 # Windows my path
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Users\mujam\OneDrive\Documents\Luminar\Machine_Learning\Deep_Learning_Projects"
-    r"\read_text\DL_Project\DL Project\OCR\Tesseract-OCR\tesseract.exe"
-)
-# import os
-# import shutil
+# pytesseract.pytesseract.tesseract_cmd = (
+#     r"C:\Users\mujam\OneDrive\Documents\Luminar\Machine_Learning\Deep_Learning_Projects"
+#     r"\read_text\DL_Project\DL Project\OCR\Tesseract-OCR\tesseract.exe"
+# )
+import os
+import shutil
 
-# # Try auto-detect first
-# tesseract_path = shutil.which("tesseract")
+# Try auto-detect first
+tesseract_path = shutil.which("tesseract")
 
-# if tesseract_path:
-#     pytesseract.pytesseract.tesseract_cmd = tesseract_path
-# elif os.name == "nt":
-#     # fallback for common Windows path
-#     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+if tesseract_path:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+elif os.name == "nt":
+    # fallback for common Windows path
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # -----------------------------
 # Page Config
