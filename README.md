@@ -102,9 +102,20 @@ streamlit run app.py
 
 ---
 
-## 📌 Key Insight
+## 🧠 Key Insights
 
-Instead of relying on raw metrics, this system uses **normalized statistical measures and OCR-driven features** to better handle real-world document variations such as headings, paragraphs, and structured layouts.
+* Traditional document quality checks rely on raw metrics, which often fail on structured layouts (e.g., headings, bullet points).
+
+* This system uses **normalized statistical measures (coefficient of variation)** to distinguish between natural layout variation and actual formatting issues.
+
+* OCR-based region analysis enables extraction of structural features (font size, spacing, contrast) without relying on language understanding.
+
+* Document type detection (Printed vs Handwritten) improves reliability by adapting interpretation logic based on OCR confidence.
+
+* The system demonstrates how multiple weak signals (geometry, typography, clarity) can be combined into a **robust decision framework**.
+
+
+⚠️ Note: This system is optimized for printed documents. Handwritten content may produce unreliable metrics.
 
 ---
 
