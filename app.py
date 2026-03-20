@@ -6,26 +6,28 @@ from PIL import Image
 import pytesseract
 from pytesseract import Output
 
+
+# pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 # -----------------------------
 # Tesseract Path (Windows)
 # -----------------------------
 
 # Windows my path
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Users\mujam\OneDrive\Documents\Luminar\Machine_Learning\Deep_Learning_Projects"
-    r"\read_text\DL_Project\DL Project\OCR\Tesseract-OCR\tesseract.exe"
-)
-# import os
-# import shutil
+# pytesseract.pytesseract.tesseract_cmd = (
+#     r"C:\Users\mujam\OneDrive\Documents\Luminar\Machine_Learning\Deep_Learning_Projects"
+#     r"\read_text\DL_Project\DL Project\OCR\Tesseract-OCR\tesseract.exe"
+# )
+import os
+import shutil
 
-# # Try auto-detect first
-# tesseract_path = shutil.which("tesseract")
+# Try auto-detect first
+tesseract_path = shutil.which("tesseract")
 
-# if tesseract_path:
-#     pytesseract.pytesseract.tesseract_cmd = tesseract_path
-# elif os.name == "nt":
-#     # fallback for common Windows path
-#     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+if tesseract_path:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+elif os.name == "nt":
+    # fallback for common Windows path
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # -----------------------------
 # Page Config
@@ -219,15 +221,15 @@ def detect_document_type(image):
             except:
                 continue
 
+    avg_confidence = np.mean(valid_conf) if valid_conf else 0
+
     if len(valid_words) < 5:
-        return "Handwritten / Low Text"
+        return "Handwritten / Low Text", avg_confidence
 
-    avg_conf = np.mean(valid_conf) if valid_conf else 0
-
-    if avg_conf < 50:
-        return "Handwritten / Low OCR Confidence"
+    if avg_confidence < 50:
+        return "Handwritten / Low OCR Confidence", avg_confidence
     else:
-        return "Printed Document"
+        return "Printed Document", avg_confidence
 # -----------------------------
 # Upload Section
 # -----------------------------
@@ -244,7 +246,7 @@ if uploaded:
     gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
 
     # Detect document type
-    doc_type = detect_document_type(img_np)
+    doc_type,avg_confidence = detect_document_type(img_np)
 
     st.subheader("📄 Document Type")
     st.info(doc_type)
@@ -256,6 +258,10 @@ if uploaded:
     # -----------------------------
     # Analysis
     # -----------------------------
+
+    st.subheader("🔍 OCR Confidence")
+    st.info(f"Average OCR Confidence: {avg_confidence:.2f}%")
+
     low_text_flag = False
     contrast_score = compute_text_contrast(gray, img_np)
 
@@ -341,6 +347,9 @@ if uploaded:
     # Handwritten penalty (soft)
     if "Handwritten" in doc_type and not low_text_flag:
         score += 2
+    
+    if avg_confidence < 50:
+        score += 3
 
 
     # Final decision

@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 test_img/
+summary_report/
+visual_error_report.csv 
 =======
 # Byte-compiled / optimized / DLL files
 __pycache__/
