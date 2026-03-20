@@ -325,11 +325,11 @@ if uploaded:
     score = 0
 
     # Skew (more realistic threshold)
-    if abs(skew_angle) > 5 and contrast_score > 0:
+    if abs(skew_angle) > 5 :
         score += 3
 
     # Contrast
-    if not low_text_flag and abs(skew_angle) > 5:
+    if not low_text_flag and contrast_score < 50:
         score += 3
 
     # Line spacing
