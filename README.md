@@ -1,3 +1,13 @@
+---
+title: Document Quality OCR
+emoji: 📄
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
 # 📄 Document Quality Assessment System
 
 An intelligent document analysis tool that evaluates the **visual quality of scanned or digital documents** using Computer Vision and OCR-based techniques.
