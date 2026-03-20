@@ -1,6 +1,6 @@
 ---
 title: Document Quality OCR
-emoji: 📄
+emoji: "📄"
 colorFrom: blue
 colorTo: green
 sdk: docker
