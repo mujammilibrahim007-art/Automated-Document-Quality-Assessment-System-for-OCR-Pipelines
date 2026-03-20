@@ -256,12 +256,14 @@ if uploaded:
     # -----------------------------
     # Analysis
     # -----------------------------
+    low_text_flag = False
     contrast_score = compute_text_contrast(gray, img_np)
 
     if contrast_score is None:
         st.warning("⚠️ Could not detect sufficient text for contrast analysis")
         contrast_level = "Unavailable"
         contrast_score = 0
+        low_text_flag = True
     else:
         contrast_level = analyze_contrast_severity(contrast_score)
 
@@ -273,7 +275,6 @@ if uploaded:
     if font_variance is None:
         st.warning("⚠️ Not enough text detected for reliable font analysis")
         font_level = "Unavailable"
-        font_variance = 0
     else:
         font_level = font_severity(font_variance)
 
@@ -296,7 +297,7 @@ if uploaded:
         },
         {
             "Metric": "Font Size Variance",
-            "Value": round(font_variance, 2),
+            "Value": round(font_variance, 2) if font_variance is not None else "N/A",
             "Severity / Interpretation": font_level
         },
         {
@@ -309,43 +310,61 @@ if uploaded:
     st.subheader("📊 Analysis Summary")
     st.dataframe(summary_df, use_container_width=True)
 
-    # -----------------------------
     # Final Decision
     # -----------------------------
-    def overall_decision(skew, contrast, font, spacing):
-        score = 0
+# -----------------------------
+# FINAL DECISION LOGIC (FIXED)
+# -----------------------------
 
-        if abs(skew) < 3:
-            score += 25
+    score = 0
 
-        # Handle contrast safely
-        if contrast is not None:
-            if contrast > 70:
-                score += 25
+    # Skew (more realistic threshold)
+    if abs(skew_angle) > 5 and contrast_score > 0:
+        score += 3
 
-        # Handle font safely
-        if font is not None:
-            if font < 80:
-                score += 25
+    # Contrast
+    if not low_text_flag and abs(skew_angle) > 5:
+        score += 3
 
-        # Handle spacing
-        if spacing < 60:
-            score += 25
+    # Line spacing
+    if line_variance > 50:
+        score += 2
 
-        if score >= 75:
-            return "✅ ACCEPTABLE"
-        elif score >= 50:
-            return "⚠️ NEEDS REVIEW"
-        else:
-            return "❌ POOR QUALITY"
+    # Font variance
+    if font_variance is not None and font_variance > 30:
+        score += 1
+
+    # Low text penalty (important)
+    if low_text_flag:
+        score += 2
+
+    # Handwritten penalty (soft)
+    if "Handwritten" in doc_type and not low_text_flag:
+        score += 2
 
 
-    decision = overall_decision(
-        skew_angle, contrast_score, font_variance, line_variance
-)
+    # Final decision
+    if score >= 6:
+        final_decision = "REJECT"
+
+    elif score >= 3:
+        final_decision = "REVIEW"
+
+    else:
+        final_decision = "ACCEPTABLE"
 
     st.subheader("📌 Final Decision")
-    st.success(decision)
+
+    if final_decision == "ACCEPTABLE":
+        st.success("✅ ACCEPTABLE")
+
+    elif final_decision == "REVIEW":
+        st.warning("⚠️ REVIEW")
+
+    else:
+        st.error("❌ REJECT")
+
+    st.caption(f"Decision Score: {score} (Higher = Worse Quality)")
     # -----------------------------
     # Download
     # -----------------------------

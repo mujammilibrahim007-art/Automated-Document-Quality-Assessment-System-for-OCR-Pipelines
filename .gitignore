@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+test_img/
 =======
 # Byte-compiled / optimized / DLL files
 __pycache__/
