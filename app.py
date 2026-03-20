@@ -6,12 +6,6 @@ from PIL import Image
 import pytesseract
 from pytesseract import Output
 
-
-# pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
-# -----------------------------
-# Tesseract Path (Windows)
-# -----------------------------
-
 # Windows my path
 # pytesseract.pytesseract.tesseract_cmd = (
 #     r"C:\Users\mujam\OneDrive\Documents\Luminar\Machine_Learning\Deep_Learning_Projects"
